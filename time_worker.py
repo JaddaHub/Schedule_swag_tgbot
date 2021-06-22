@@ -17,7 +17,6 @@ class Shedule:
         self.cur_datetime = cur_datetime
         self.squad = squad
         self.shedule = json_file
-        self.shedule = json.load(json_file)
 
         self.activity = self.what_activity()
 
