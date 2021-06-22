@@ -13,7 +13,6 @@ dp = Dispatcher(bot)
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
 
-
 keyboard_general = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_group = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_function = types.ReplyKeyboardMarkup(resize_keyboard=False)
@@ -63,17 +62,21 @@ async def event_now(message: types.Message):
     author_id = str(message.from_user.id)
     author_group = get_otryad(author_id)
     function_schedule = Shedule(time_now, author_group)
-    function_schedule.
-    await message.answer("Ошибка загрузки")
+    name_activity = function_schedule.what_now()
+    await message.answer(
+        f"—————————————————————————— \n"
+        f"🔻➡️ У отряда №{author_group} сейчас {name_activity[1]} \n"
+        f"⏰ Продолжительность {name_activity[0]} \n"
+        f"——————————————————————————")
 
 
 @dp.message_handler(lambda message: message.text == "Расписание на сегодня")
 async def timetable_today(message: types.Message):
     today_time = (date.today().day, date.today().month)
-    result = ""
-    for i in range(15):
-        result += f"{time} {action}"
-    await message.answer(result,
+    # result = ""
+    # for i in range(15):
+    #     result += f"{time} {action}"
+    await message.answer("",
                          reply_markup=keyboard_function)
 
 
