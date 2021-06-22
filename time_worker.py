@@ -17,8 +17,7 @@ class Shedule:
         self.cur_datetime = cur_datetime
         self.squad = squad
         self.shedule = json_file
-        if isinstance(json_file, json):
-            self.shedule = json.load(json_file)
+        self.shedule = json.load(json_file)
 
         self.activity = self.what_activity()
 
@@ -47,7 +46,7 @@ class Shedule:
 
     def remaining_time(self):
         t1 = self._refact_time_to_datetime(self.activity[1][0])
-        t2 = self._refact_time_to_datetime(self.activity[0][0])
+        t2 = self.cur_datetime
         return timedelta(t2 - t1)
 
     def show_shedule(self):
