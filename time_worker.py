@@ -1,6 +1,5 @@
 import json
 from datetime import datetime
-from datetime import timedelta
 
 
 class Shedule:
@@ -19,7 +18,7 @@ class Shedule:
         return self.what_activity()[1]
 
     def activity_timings(self):
-        return [i[0] for i in self.what_activity()][0]
+        return self.what_now()[0]
 
     def what_activity(self):
         today = self.shedule[self.squad][str(self.cur_datetime.day)]
@@ -32,7 +31,8 @@ class Shedule:
                 return res
 
     def remaining_time(self):
-        t1, t2 = self._refact_two_datetimes(self.activity_timings())
+        t1, t2 = self.cur_datetime, self._refact_time_to_datetime(
+            self.what_next()[0])
         return t2 - t1
 
     def show_shedule(self):
@@ -52,4 +52,4 @@ class Shedule:
 
 if __name__ == '__main__':
     sd = Shedule(datetime.now(), '1')
-    print(sd.show_shedule())
+    print(sd.remaining_time())
