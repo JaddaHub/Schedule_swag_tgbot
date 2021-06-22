@@ -10,31 +10,31 @@ class Shedule:
             self.shedule = json.load(json_file)
 
 
-def what_now(self):
-    now = datetime.now()
-    try:
-        today = self.shedule[datetime.today()]
-        for hour in today.keys():
-            if hour <= now.hour:
-                return today[hour]
+    def what_now(self):
+        now = datetime.now()
+        try:
+            today = self.shedule[datetime.today()]
+            for hour in today.keys():
+                if hour <= now.hour:
+                    return today[hour]
 
-    except KeyError:
-        return 0
+        except KeyError:
+            return 0
 
 
-def what_next(self):
-    now = datetime.now()
-    has_now = False
-    try:
-        today = self.shedule[datetime.today()]
-        for hour in today.keys():
-            if hour <= now.hour and has_now:
-                return today[hour]
-            elif not has_now:
-                has_now = True
+    def what_next(self):
+        now = datetime.now()
+        has_now = False
+        try:
+            today = self.shedule[datetime.today()]
+            for hour in today.keys():
+                if hour <= now.hour and has_now:
+                    return today[hour]
+                elif not has_now:
+                    has_now = True
 
-    except KeyError:
-        return 0
+        except KeyError:
+            return 0
 
 
 if __name__ == '__main__':
