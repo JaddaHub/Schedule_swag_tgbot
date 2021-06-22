@@ -12,50 +12,46 @@ class Shedule:
         with open(self.JSON_NAME, encoding='utf-8') as jsload:
             self.shedule = json.load(jsload)
 
-        self.activity = self.what_activity()
-
     def what_now(self):
-        return self.activity
+        return self.what_activity()[0]
 
     def what_next(self):
-        return self.activity[1]
+        return self.what_activity()[1]
 
     def activity_timings(self):
-        return tuple([i[0] for i in self.what_activity()])
+        return [i[0] for i in self.what_activity()][0]
 
     def what_activity(self):
-        has_now = False
-        res = []
-
         today = self.shedule[self.squad][str(self.cur_datetime.day)]
+        res = []
+        for time in today:
+            t1, t2 = self._refact_two_datetimes(time)
+            if t1 <= self.cur_datetime < t2 or len(res) == 1:
+                res.append((time, today[time]))
+            if len(res) == 2:
+                return res
 
-        for hour in today[0].keys():
-            ref_hour = self._refact_time_to_datetime(hour)
-            if ref_hour <= self.cur_datetime and has_now:
-                res.extend((hour, self.shedule[hour]))
-            elif not has_now:
-                has_now = True
-                res.extend((hour, today[0][hour]))
-        return res
+    def _refact_two_datetimes(self, time):
+        return self._refact_time_to_datetime(
+            time[:time.find('-')]), self._refact_time_to_datetime(
+            time[time.find('-') + 1:])
 
     def remaining_time(self):
-        t1 = self._refact_time_to_datetime(self.activity[1][0])
-        t2 = self.cur_datetime
-        return timedelta(t2 - t1)
+        t1, t2 = self._refact_two_datetimes(self.activity_timings())
+        return t2 - t1
 
     def show_shedule(self):
-        return self.shedule[self.cur_datetime.date][0]
+        return [timing for timing in
+                self.shedule[self.squad][str(self.cur_datetime.day)]]
 
     def _refact_time_to_datetime(self, time_str):
         time_str = time_str.split('-')[0]
         res = self.cur_datetime
         return res.replace(hour=int(time_str[:time_str.find(':')]),
-                           minute=int(time_str[time_str.find(':') + 1]))
+                           minute=int(time_str[time_str.find(':') + 1:]))
 
 
 if __name__ == '__main__':
-    print(datetime.now().day)
     sd = Shedule(datetime.now(), '1')
 
-    print(sd.what_now())
-    print(sd.what_next())
+    print(sd.remaining_time())
