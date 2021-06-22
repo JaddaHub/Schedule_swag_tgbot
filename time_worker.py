@@ -12,10 +12,10 @@ class Shedule:
             self.shedule = json.load(jsload)
 
     def what_now(self):
-        return self.what_activity()[0]
+        return self.what_activity()[0] if self.what_activity() else False
 
     def what_next(self):
-        return self.what_activity()[1]
+        return self.what_activity()[1] if self.what_activity() else False
 
     def activity_timings(self):
         return self.what_now()[0]
