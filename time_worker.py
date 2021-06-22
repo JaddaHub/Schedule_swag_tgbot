@@ -36,9 +36,12 @@ class Shedule:
             return False
 
     def remaining_time(self):
-        t1, t2 = self.cur_datetime, self._refact_time_to_datetime(
-            self.what_next()[0])
-        return t2 - t1
+        return self._refact_two_datetimes(self.what_now()[0])[
+                   1] - self.cur_datetime
+
+    def remaining_to_next(self):
+        return self._refact_two_datetimes(self.what_next()[0])[
+                   0] - self.cur_datetime
 
     def show_shedule(self):
         return self.shedule[self.squad][str(self.cur_datetime.day)]
@@ -57,4 +60,5 @@ class Shedule:
 
 if __name__ == '__main__':
     sd = Shedule(datetime.now(), '1')
-    print(sd.what_activity())
+    print(sd.remaining_to_next())
+    print(sd.remaining_time())
