@@ -4,6 +4,7 @@ from datetime import datetime
 
 class Shedule:
     def __init__(self, cur_datetime, squad):
+        self.relax_time = 'свободное время'
         self.cur_datetime = cur_datetime
         self.squad = squad
         self.JSON_NAME = 'json_timetable.json'
@@ -12,10 +13,12 @@ class Shedule:
             self.shedule = json.load(jsload)
 
     def what_now(self):
-        return self.what_activity()[0] if self.what_activity() else False
+        return self.what_activity()[
+            0] if self.what_activity() else self.relax_time
 
     def what_next(self):
-        return self.what_activity()[1] if self.what_activity() else False
+        return self.what_activity()[
+            1] if self.what_activity() else self.relax_time
 
     def activity_timings(self):
         return self.what_now()[0]
