@@ -1,7 +1,8 @@
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 import config
-from datetime import date
+from datetime import date, datetime
+from time_worker import Shedule
 
 # Объект бота
 bot = Bot(token=config.TOKEN)
@@ -9,6 +10,8 @@ bot = Bot(token=config.TOKEN)
 dp = Dispatcher(bot)
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
+
+squad_number = 1
 
 keyboard_general = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_group = types.ReplyKeyboardMarkup(resize_keyboard=False)
@@ -45,25 +48,31 @@ async def choose_group(message: types.Message):
     lambda message: message.text in ["1 отряд", "2 отряд", "3 отряд",
                                      "4 отряд", "5 отряд"])
 async def registration(message: types.Message):
+    squad_number = message.text
     await message.answer(
         f"{message.chat.id}, Ваш отряд номер {message.text.split()[0]}",
         reply_markup=keyboard_function)
 
 
 @dp.message_handler(lambda message: message.text == "Мероприятия сейчас")
-async def choose_group(message: types.Message):
+async def event_now(message: types.Message):
+    time_now = datetime.now()
+    function_schedule = Shedule(time_now, squad_number, )
     await message.answer("Ошибка загрузки")
 
 
 @dp.message_handler(lambda message: message.text == "Расписание на сегодня")
-async def choose_group(message: types.Message):
+async def timetable_today(message: types.Message):
     today_time = (date.today().day, date.today().month)
-    await message.answer(f"Сегодня {today_time[0]}.{today_time[1]}",
+    result = ""
+    for i in range(15):
+        result += f"{time} {action}"
+    await message.answer(result,
                          reply_markup=keyboard_function)
 
 
 @dp.message_handler(lambda message: message.text == "Главное меню")
-async def choose_group(message: types.Message):
+async def enter_menu(message: types.Message):
     await message.answer("Вы перешли в главное меню",
                          reply_markup=keyboard_general)
 
