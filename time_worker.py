@@ -32,8 +32,7 @@ class Shedule:
                 res.append((time, today[time]))
             if len(res) == 2:
                 return res
-        else:
-            return False
+        return False
 
     def remaining_time(self):
         return self._refact_two_datetimes(self.what_now()[0])[
