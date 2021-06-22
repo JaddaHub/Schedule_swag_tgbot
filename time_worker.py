@@ -31,18 +31,17 @@ class Shedule:
             if len(res) == 2:
                 return res
 
-    def _refact_two_datetimes(self, time):
-        return self._refact_time_to_datetime(
-            time[:time.find('-')]), self._refact_time_to_datetime(
-            time[time.find('-') + 1:])
-
     def remaining_time(self):
         t1, t2 = self._refact_two_datetimes(self.activity_timings())
         return t2 - t1
 
     def show_shedule(self):
-        return [timing for timing in
-                self.shedule[self.squad][str(self.cur_datetime.day)]]
+        return self.shedule[self.squad][str(self.cur_datetime.day)]
+
+    def _refact_two_datetimes(self, time):
+        return self._refact_time_to_datetime(
+            time[:time.find('-')]), self._refact_time_to_datetime(
+            time[time.find('-') + 1:])
 
     def _refact_time_to_datetime(self, time_str):
         time_str = time_str.split('-')[0]
@@ -53,5 +52,4 @@ class Shedule:
 
 if __name__ == '__main__':
     sd = Shedule(datetime.now(), '1')
-
-    print(sd.remaining_time())
+    print(sd.show_shedule())
