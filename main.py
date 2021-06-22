@@ -3,6 +3,8 @@ from aiogram import Bot, Dispatcher, executor, types
 import config
 from datetime import date, datetime
 from time_worker import Shedule
+import json
+from jsonreader import set_otryad, get_otryad
 
 # Объект бота
 bot = Bot(token=config.TOKEN)
@@ -11,7 +13,6 @@ dp = Dispatcher(bot)
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
 
-squad_number = 1
 
 keyboard_general = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_group = types.ReplyKeyboardMarkup(resize_keyboard=False)
@@ -48,7 +49,9 @@ async def choose_group(message: types.Message):
     lambda message: message.text in ["1 отряд", "2 отряд", "3 отряд",
                                      "4 отряд", "5 отряд"])
 async def registration(message: types.Message):
-    squad_number = message.text
+    author_id = str(message.from_user.id)
+    otryad_number = message.text.split()[0]
+    set_otryad(author_id, otryad_number)
     await message.answer(
         f"{message.chat.id}, Ваш отряд номер {message.text.split()[0]}",
         reply_markup=keyboard_function)
@@ -57,7 +60,10 @@ async def registration(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Мероприятия сейчас")
 async def event_now(message: types.Message):
     time_now = datetime.now()
-    function_schedule = Shedule(time_now, squad_number, )
+    author_id = str(message.from_user.id)
+    author_group = get_otryad(author_id)
+    function_schedule = Shedule(time_now, author_group)
+    function_schedule.
     await message.answer("Ошибка загрузки")
 
 
