@@ -9,13 +9,13 @@ class Shedule:
         self.squad = squad
         self.JSON_NAME = 'json_timetable.json'
 
-        with open(self.JSON_NAME) as jsload:
+        with open(self.JSON_NAME, encoding='utf-8') as jsload:
             self.shedule = json.load(jsload)
 
         self.activity = self.what_activity()
 
     def what_now(self):
-        return self.activity[0]
+        return self.activity
 
     def what_next(self):
         return self.activity[1]
