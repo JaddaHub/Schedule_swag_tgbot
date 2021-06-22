@@ -1,6 +1,7 @@
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 import config
+from jsonreader import *
 
 # Объект бота
 bot = Bot(token=config.TOKEN)
