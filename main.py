@@ -16,13 +16,16 @@ logging.basicConfig(level=logging.INFO)
 keyboard_general = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_group = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_function = types.ReplyKeyboardMarkup(resize_keyboard=False)
+keyboard_start = types.ReplyKeyboardMarkup(resize_keyboard=False)
 buttons_function = ["Мероприятия сейчас", "Следующее мероприятие",
                     "Расписание на сегодня", "Контакты",
-                    "Общая информация", "Главное меню"]
-buttons_general = ["Выбрать отряд"]
+                    "Общая информация", "Изменить отряд"]
+
+buttons_start = ["Выбрать отряд"]
 buttons_group = ["5 отряд", "4 отряд", "3 отряд", "2 отряд", "1 отряд"]
-keyboard_general.add(*buttons_general)
+keyboard_general.add(*buttons_start)
 keyboard_group.add(*buttons_group)
+keyboard_start.add(*buttons_start)
 keyboard_function.add(*buttons_function)
 
 contacts = {
@@ -38,7 +41,7 @@ async def process_start_command(message: types.Message):
     await message.answer(
         "👋 Привет! Этот бот был специально разработан для Лицея Иннополиса. Он умеет выдавать расписание 📚 на текущий день, мероприятие в данный момент 📜 \n \n"
         "𝔭𝔯𝔬𝔡. 𝔟𝔶 𝔅𝔘𝔉𝔉𝔐ℑ",
-        reply_markup=keyboard_general)
+        reply_markup=keyboard_start)
 
 
 @dp.message_handler(commands="test1")
@@ -48,7 +51,13 @@ async def cmd_test1(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "Выбрать отряд")
 async def choose_group(message: types.Message):
-    await message.answer("Выбери отряд с 1 по 5 номер",
+    await message.answer("Выберите отряд с 1 по 5 номер 👇",
+                         reply_markup=keyboard_group)
+
+
+@dp.message_handler(lambda message: message.text == "Изменить отряд")
+async def change_group(message: types.Message):
+    await message.answer("Выберите отряд с 1 по 5 номер 👇",
                          reply_markup=keyboard_group)
 
 
@@ -60,7 +69,7 @@ async def registration(message: types.Message):
     otryad_number = message.text.split()[0]
     set_otryad(author_id, otryad_number)
     await message.answer(
-        f"Вы выбрали отряд номер {message.text.split()[0]}",
+        f"✅ Вы выбрали отряд номер {message.text.split()[0]}",
         reply_markup=keyboard_function)
 
 
@@ -71,11 +80,14 @@ async def event_now(message: types.Message):
     author_group = get_otryad(author_id)
     function_schedule = Shedule(time_now, author_group)
     name_activity = function_schedule.what_now()
+    least_time = str(function_schedule.remaining_time())
+    quan_minutes = least_time.split(":")[1]
+    quan_hours = least_time.split(":")[0]
     if name_activity:
         await message.answer(
             f"—————————————————— \n"
             f"🔻➡️ У отряда №{author_group} сейчас {name_activity[1]} \n"
-            f"⏰ Продолжительность {name_activity[0]}(осталось {function_schedule.remaining_time()}) \n"
+            f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}) \n"
             f"——————————————————")
     else:
         await message.answer(
@@ -99,12 +111,6 @@ async def timetable_today(message: types.Message):
     result += "——————————————————"
     await message.answer(result,
                          reply_markup=keyboard_function)
-
-
-@dp.message_handler(lambda message: message.text == "Главное меню")
-async def enter_menu(message: types.Message):
-    await message.answer("Вы перешли в главное меню",
-                         reply_markup=keyboard_general)
 
 
 @dp.message_handler(lambda message: message.text == "Общая информация")
@@ -134,10 +140,13 @@ async def further_now(message: types.Message):
     author_group = get_otryad(author_id)
     function_schedule = Shedule(time_now, author_group)
     name_activity = function_schedule.what_next()
+    least_time = str(function_schedule.remaining_to_next())
+    quan_minutes = least_time.split(":")[1]
+    quan_hours = least_time.split(":")[0]
     await message.answer(
         f"—————————————————— \n"
         f"🔻➡️ У отряда №{author_group} следующее мероприятие: {name_activity[1]} \n \n"
-        f"⏰ Продолжительность {name_activity[0]}(осталось {function_schedule.remaining_to_next()}) \n"
+        f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}) \n"
         f"——————————————————")
 
 
