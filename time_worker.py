@@ -29,6 +29,8 @@ class Shedule:
                 res.append((time, today[time]))
             if len(res) == 2:
                 return res
+        else:
+            return False
 
     def remaining_time(self):
         t1, t2 = self.cur_datetime, self._refact_time_to_datetime(
@@ -52,4 +54,4 @@ class Shedule:
 
 if __name__ == '__main__':
     sd = Shedule(datetime.now(), '1')
-    print(sd.remaining_time())
+    print(sd.what_activity())
