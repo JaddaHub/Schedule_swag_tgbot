@@ -3,20 +3,14 @@ from datetime import datetime
 from datetime import timedelta
 
 
-# cur_time
-# отряд
-
-# расписание на день
-# what_next
-# оставшееся время
-# что сейчас
-
-
 class Shedule:
-    def __init__(self, cur_datetime, squad, json_file):
+    def __init__(self, cur_datetime, squad):
         self.cur_datetime = cur_datetime
         self.squad = squad
-        self.shedule = json_file
+        self.JSON_NAME = 'json_timetable.json'
+
+        with open(self.JSON_NAME) as jsload:
+            self.shedule = json.load(jsload)
 
         self.activity = self.what_activity()
 
@@ -25,6 +19,9 @@ class Shedule:
 
     def what_next(self):
         return self.activity[1]
+
+    def activity_timings(self):
+        return tuple([i[0] for i in self.what_activity()])
 
     def what_activity(self):
         has_now = False
