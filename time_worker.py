@@ -26,19 +26,17 @@ class Shedule:
     def what_activity(self):
         has_now = False
         res = []
-        try:
-            today = self.shedule[self.cur_datetime.today()]
-            for hour in today[0].keys():
-                ref_hour = self._refact_time_to_datetime(hour)
-                if ref_hour <= self.cur_datetime and has_now:
-                    res.extend((hour, self.shedule[hour]))
-                elif not has_now:
-                    has_now = True
-                    res.extend((hour, self.shedule[hour]))
-        except KeyError:
-            return None
-        finally:
-            return res
+
+        today = self.shedule[self.squad][str(self.cur_datetime.day)]
+
+        for hour in today[0].keys():
+            ref_hour = self._refact_time_to_datetime(hour)
+            if ref_hour <= self.cur_datetime and has_now:
+                res.extend((hour, self.shedule[hour]))
+            elif not has_now:
+                has_now = True
+                res.extend((hour, today[0][hour]))
+        return res
 
     def remaining_time(self):
         t1 = self._refact_time_to_datetime(self.activity[1][0])
@@ -49,5 +47,15 @@ class Shedule:
         return self.shedule[self.cur_datetime.date][0]
 
     def _refact_time_to_datetime(self, time_str):
-        return int(time_str[:time_str.find(':')]) * 60 + int(
-            time_str[time_str.find(':') + 1:])
+        time_str = time_str.split('-')[0]
+        res = self.cur_datetime
+        return res.replace(hour=int(time_str[:time_str.find(':')]),
+                           minute=int(time_str[time_str.find(':') + 1]))
+
+
+if __name__ == '__main__':
+    print(datetime.now().day)
+    sd = Shedule(datetime.now(), '1')
+
+    print(sd.what_now())
+    print(sd.what_next())
