@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Shedule:
     def __init__(self, cur_datetime, squad):
-        self.relax_time = 'свободное время'
+        self.relax_time = False
         self.cur_datetime = cur_datetime
         self.squad = squad
         self.JSON_NAME = 'json_timetable.json'
@@ -36,11 +36,11 @@ class Shedule:
 
     def remaining_time(self):
         return self._refact_two_datetimes(self.what_now()[0])[
-                   1] - self.cur_datetime
+                   1] - self.cur_datetime if self.what_now() else self.relax_time
 
     def remaining_to_next(self):
         return self._refact_two_datetimes(self.what_next()[0])[
-                   0] - self.cur_datetime
+                   0] - self.cur_datetime if self.what_next() else self.relax_time
 
     def show_shedule(self):
         return self.shedule[self.squad][str(self.cur_datetime.day)]
@@ -59,5 +59,4 @@ class Shedule:
 
 if __name__ == '__main__':
     sd = Shedule(datetime.now(), '1')
-    print(sd.remaining_to_next())
-    print(sd.remaining_time())
+    sd.remaining_time()
