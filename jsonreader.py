@@ -22,8 +22,3 @@ def __clear_json():
     with open(json_path, 'w', encoding='utf-8') as js_file:
         json.dump(dict(), js_file)
 
-
-if __name__ == '__main__':
-    print(get_squad('1123'))
-    set_squad('1123', '5')
-    print(get_squad('1123'))

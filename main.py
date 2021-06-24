@@ -4,7 +4,7 @@ import config
 from datetime import date, datetime
 from time_worker import Shedule
 import json
-from jsonreader import set_otryad, get_otryad
+from jsonreader import set_squad, get_squad
 
 # Объект бота
 bot = Bot(token=config.TOKEN)
@@ -62,7 +62,7 @@ async def change_group(message: types.Message):
 async def registration(message: types.Message):
     author_id = str(message.from_user.id)
     otryad_number = message.text.split()[0]
-    set_otryad(author_id, otryad_number)
+    set_squad(author_id, otryad_number)
     await message.answer(
         f"✅ Вы выбрали отряд номер {message.text.split()[0]}",
         reply_markup=keyboard_function)
@@ -72,7 +72,7 @@ async def registration(message: types.Message):
 async def event_now(message: types.Message):
     time_now = datetime.now()
     author_id = str(message.from_user.id)
-    author_group = get_otryad(author_id)
+    author_group = get_squad(author_id)
     if author_group:
         function_schedule = Shedule(time_now, author_group)
         name_activity = function_schedule.what_now()
@@ -100,7 +100,7 @@ async def event_now(message: types.Message):
 async def timetable_today(message: types.Message):
     time_now = datetime.now()
     author_id = str(message.from_user.id)
-    author_group = get_otryad(author_id)
+    author_group = get_squad(author_id)
     if author_group:
         result = "—————————————————— \n"
         result += f"🟥 Расписание {author_group} отряда \n"
@@ -141,7 +141,7 @@ async def contact_menu(message: types.Message):
 async def further_now(message: types.Message):
     time_now = datetime.now()
     author_id = str(message.from_user.id)
-    author_group = get_otryad(author_id)
+    author_group = get_squad(author_id)
     if author_group:
         function_schedule = Shedule(time_now, author_group)
         name_activity = function_schedule.what_next()
