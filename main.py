@@ -4,7 +4,7 @@ import config
 from datetime import date, datetime
 from time_worker import Shedule
 import json
-from jsonreader import set_squad, get_squad
+from jsonreader import set_squad, get_squad, get_contacts
 
 # Объект бота
 bot = Bot(token=config.TOKEN)
@@ -30,13 +30,7 @@ keyboard_group.add(*buttons_group)
 keyboard_start.add(*buttons_start)
 keyboard_function.add(*buttons_function)
 keyboard_contacts.add(*buttons_contacts)
-contacts = {
-    "Организаторы": "Почта - mail@innopoliscamp.ru \nКонтактный номер - 8-965-583-19-27 \nАдрес - г. Иннополис, ул. Квантовый бульвар, д.1, здание Лицея Иннополис.",
-    "Администрация": "Руководитель смены Эльшад Бахшиев @elshadbah\n Старший вожатый Татьяна Онищенко @o_teta_a\nПедагог-организатор Диана Куличенко @kulichik_di\nСтарший преподаватель Анастасия Андронова +7 999 232-15-71 @andronova_anastasia \nМедицинский работник Наиля Набиева 89869233503 @Nabi0987\nАдминистратор смены Рустам Хамидуллин +7 951 065-12-48 @Rstm_Khan\nСпортинструктор Дарья Капитурова +7 987 457-16-07 @raven_rch\nЗвукооператор Виталий Сапожников +7 904 767-48-52 @Hawk_Prime",
-    "Преподаватели": "У InnoCamp 11 преподавателей по направлениям: \n [Minecraft] Камилла Хамидуллина - @Kamila_ak \n [App Inventor] Макше Сейткалиев - @seytkalievm \n [Scratch] Маргарита Сидорская - @RitaSidorskya \n [Python] Никита Носков - @MPardis \n [C#] Артем Сахаров - @ilostmygoddamnson \n [Java] Артемий Кочергин - @treatn \n [Дизайн] Динар Шамсутдинов - @d_shamik \n [Маркетинг] Марина Лебединская - @mari1861 \n [Управление] Анастасия Андронова - @andronova_anastasia \n [Продвинутый Python] Макар Шевченко - @SyrexMinus \n [Проектная мастерская] Евгений Сазонов - @EvgenySazonov",
-    "Вожатые": "1 отряд:\n Владимир Прокопенко(@prokov) и Юлия Кузьмина(@kyzminajulia) \n\n2 отряд:\n Алина Турчина(@lunallina) и Константин Воробьев \n\n3 отряд:\n Ксения Панасова(@KseniaHope20) и Мохамед Агатанов(@Demahom)  \n\n4 отряд:\n Дамир Нуртдинов(@Damurka5) Екатерина Мацнева(@matsnevakat)  \n\n5 отряд:\n Иван Булатов (@cffeeman) и Алиса Тимофеева (@Alisainno18) ",
-    "Остальные": "DJ(диджей) - Виталий - +79047674852, \n Педагог-организатор @kulichik_di"
-}
+contacts = get_contacts()
 
 
 @dp.message_handler(commands=['start'])

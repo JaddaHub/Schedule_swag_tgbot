@@ -1,6 +1,7 @@
 import json
 
 json_path = 'users_data.json'
+contacts_json_path = 'json_contacts.json'
 
 
 def get_squad(id_):
@@ -27,6 +28,11 @@ def get_count_of_users():
     with open(json_path, encoding='utf-8') as js_file:
         users_data = json.load(js_file)
         return len(users_data.keys())
+
+
+def get_contacts():
+    with open(contacts_json_path) as js_file:
+        return json.load(js_file)
 
 
 if __name__ == '__main__':
