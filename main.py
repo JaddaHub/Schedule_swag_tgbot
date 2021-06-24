@@ -63,7 +63,7 @@ async def change_group(message: types.Message):
                                      "4 отряд", "5 отряд"])
 async def registration(message: types.Message):
     author_id = str(message.from_user.id)
-    otryad_number = message.text.splscheduleinnocampit()[0]
+    otryad_number = message.text.split()[0]
     set_squad(author_id, otryad_number)
     await message.answer(
         f"✅ Вы выбрали отряд номер {message.text.split()[0]}",
