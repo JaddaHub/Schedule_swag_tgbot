@@ -83,11 +83,12 @@ async def event_now(message: types.Message):
     least_time = str(function_schedule.remaining_time())
     quan_minutes = least_time.split(":")[1]
     quan_hours = least_time.split(":")[0]
+    quan_seconds = least_time.split(':')[2]
     if name_activity:
         await message.answer(
             f"—————————————————— \n"
             f"🔻➡️ У отряда №{author_group} сейчас {name_activity[1]} \n"
-            f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}) \n"
+            f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}:{quan_seconds}) \n"
             f"——————————————————")
     else:
         await message.answer(
@@ -143,10 +144,11 @@ async def further_now(message: types.Message):
     least_time = str(function_schedule.remaining_to_next())
     quan_minutes = least_time.split(":")[1]
     quan_hours = least_time.split(":")[0]
+    quan_seconds = least_time.split(":")[2]
     await message.answer(
         f"—————————————————— \n"
         f"🔻➡️ У отряда №{author_group} следующее мероприятие: {name_activity[1]} \n \n"
-        f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}) \n"
+        f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}:{quan_seconds}) \n"
         f"——————————————————")
 
 
