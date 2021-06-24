@@ -32,9 +32,9 @@ keyboard_contacts.add(*buttons_contacts)
 
 contacts = {
     "Организаторы": "Почта - mail@innopoliscamp.ru \nКонтактный номер - 8-965-583-19-27 \nАдрес - г. Иннополис, ул. Квантовый бульвар, д.1, здание Лицея Иннополис.",
-    "Преподователи": "У InnoCamp 11 преподователей по направлениям: \nКамилла Хамидуллина - @Kamila_ak \nМакше Сейткалиев - @seytkalievm \nМаргарита Сидорская - @RitaSidorskya \nНикита Носков - @MPardis \nАртем Сахаров - @ilostmygoddamnson \nАртемий Кочергин - @treatn \nДинар Шамсутдинов - @d_shamik \nМарина Лебединская - @mari1861 \nАнастасия Андронова - @andronova_anastasia \nМакар Шевченко - @SyrexMinus \nЕвгений Сазонов - @EvgenySazonov",
+    "Преподователи": "У InnoCamp 11 преподавателей по направлениям: \nКамилла Хамидуллина - @Kamila_ak \nМакше Сейткалиев - @seytkalievm \nМаргарита Сидорская - @RitaSidorskya \nНикита Носков - @MPardis \nАртем Сахаров - @ilostmygoddamnson \nАртемий Кочергин - @treatn \nДинар Шамсутдинов - @d_shamik \nМарина Лебединская - @mari1861 \nАнастасия Андронова - @andronova_anastasia \nМакар Шевченко - @SyrexMinus \nЕвгений Сазонов - @EvgenySazonov",
     "Вожатые": "1 отряд:\n Владимир Прокопенко(@prokov) и Юлия Кузьмина(@kyzminajulia) \n\n2 отряд:\n Алина Турчина(@lunallina) и Константин Воробьев \n\n3 отряд:\n Ксения Панасова(@KseniaHope20) и Мохамед Агатанов(@Demahom)  \n\n4 отряд:\n Дамир Нуртдинов(@Damurka5) Екатерина Мацнева(@matsnevakat)  \n\n5 отряд:\n Иван Булатов (@cffeeman) и Алиса Тимофеева (@Alisainno18) ",
-    "Остальные": "DJ(диджей) - Виталий - +79047674852, \n Старший преподователь @kulichik_di"
+    "Остальные": "DJ(диджей) - Виталий - +79047674852, \n Педагог-организатор @kulichik_di"
 }
 
 
