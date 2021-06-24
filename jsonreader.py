@@ -22,3 +22,15 @@ def __clear_json():
     with open(json_path, 'w', encoding='utf-8') as js_file:
         json.dump(dict(), js_file)
 
+
+def get_count_of_users():
+    with open(json_path, encoding='utf-8') as js_file:
+        users_data = json.load(js_file)
+        return len(users_data.keys())
+
+
+if __name__ == '__main__':
+    set_squad('123', '1')
+    print(get_count_of_users())
+    set_squad('1212', '2')
+    print(get_count_of_users())
