@@ -17,9 +17,11 @@ keyboard_general = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_group = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_function = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_start = types.ReplyKeyboardMarkup(resize_keyboard=False)
+keyboard_contacts = types.ReplyKeyboardMarkup(resize_keyboard=False)
 buttons_function = ["Мероприятия сейчас", "Следующее мероприятие",
                     "Расписание на сегодня", "Контакты",
                     "Общая информация", "Изменить отряд"]
+buttons_contacts = ["Организаторы", "Преподователи", "Вожатые", "Остальные"]
 
 buttons_start = ["Выбрать отряд"]
 buttons_group = ["5 отряд", "4 отряд", "3 отряд", "2 отряд", "1 отряд"]
@@ -27,12 +29,14 @@ keyboard_general.add(*buttons_start)
 keyboard_group.add(*buttons_group)
 keyboard_start.add(*buttons_start)
 keyboard_function.add(*buttons_function)
+keyboard_contacts.add(*buttons_contacts)
+
 
 contacts = {
     "Организаторы": "Почта - mail@innopoliscamp.ru \nКонтактный номер - 8-965-583-19-27 \nАдрес - г. Иннополис, ул. Квантовый бульвар, д.1, здание Лицея Иннополис.",
     "Преподователи": "У InnoCamp 11 преподователей по направлениям: \nКамилла Хамидуллина - @Kamila_ak \nМакше Сейткалиев - @seytkalievm \nМаргарита Сидорская - @RitaSidorskya \nНикита Носков - @MPardis \nАртем Сахаров - @ilostmygoddamnson \nАртемий Кочергин - @treatn \nДинар Шамсутдинов - @d_shamik \nМарина Лебединская - @mari1861 \nАнастасия Андронова - @andronova_anastasia \nМакар Шевченко - @SyrexMinus \nЕвгений Сазонов - @EvgenySazonov",
-    "Вожатые": "1 отряд: Владимир Прокопенко(@prokov) и Юлия Кузьмина(@kyzminajulia) \n2 отряд: Алина Турчина(@lunallina) и Константин Воробьев \n3 отряд: Ксения Панасова(@KseniaHope20) и Мохамед Агатанов(@Demahom)  \n4 отряд: Дамир Нуртдинов(@Damurka5) Екатерина Мацнева(@matsnevakat)  \n5 отряд: Иван Булатов (@cffeeman) и Алиса Тимофеева (@Alisainno18) ",
-    "Остальные": "DJ(диджей) - Виталий - +79047674852, Старший преподователь @kulichik_di"
+    "Вожатые": "1 отряд:\n Владимир Прокопенко(@prokov) и Юлия Кузьмина(@kyzminajulia) \n\n2 отряд:\n Алина Турчина(@lunallina) и Константин Воробьев \n\n3 отряд:\n Ксения Панасова(@KseniaHope20) и Мохамед Агатанов(@Demahom)  \n\n4 отряд:\n Дамир Нуртдинов(@Damurka5) Екатерина Мацнева(@matsnevakat)  \n\n5 отряд:\n Иван Булатов (@cffeeman) и Алиса Тимофеева (@Alisainno18) ",
+    "Остальные": "DJ(диджей) - Виталий - +79047674852, \n Старший преподователь @kulichik_di"
 }
 
 
@@ -40,7 +44,7 @@ contacts = {
 async def process_start_command(message: types.Message):
     await message.answer(
         "👋 Привет! Этот бот был специально разработан для лагеря Иннополиса. Он умеет выдавать расписание 📚 на текущий день, мероприятие в данный момент 📜 \n \n"
-        "𝔭𝔯𝔬𝔡. 𝔟𝔶 𝔅𝔘𝔉𝔉𝔐ℑ",
+        "𝔭𝔯𝔬𝔡. 𝔟𝔶 𝔅𝔘𝔉𝔉𝔐ℑ (vk.com/buffmi)",
         reply_markup=keyboard_start)
 
 
@@ -126,11 +130,20 @@ async def general_info(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "Контакты")
 async def contact_menu(message: types.Message):
+    '''
     result = ""
     for i in contacts.keys():
         result += f"{i}: {contacts[i]} \n \n "
+    '''
+    result = "Выберите группу людей которая вас интересует"
     await message.answer(result,
-                         reply_markup=keyboard_function)
+                         reply_markup=keyboard_contacts)
+@dp.message_handler(lambda message: message.text in buttons_contacts)
+async def contact_menu(message: types.Message):
+    result = f"{message.text}:\n {contacts[message.text]} \n \n "
+    await message.answer(result,
+                         reply_markup=keyboard_contacts)
+
 
 
 @dp.message_handler(lambda message: message.text == "Следующее мероприятие")
