@@ -1,23 +1,29 @@
 import json
 
-def set_otryad(id_,otryad_):
-    try:
-        dictData = { "ID"       : id_,
-                     "otryad"    : otryad_ }
-        jsonData = json.dumps(dictData)
-        with open("ids/"+str(id_)+".json", "w") as file:
-            file.write(jsonData)
-        #print(jsonData)
-        return True
-    except:
-        return False
+json_path = 'users_data.json'
 
-def get_otryad(id_):
-    try:
-        with open("ids/"+str(id_)+".json","r+") as file:
-            jsonData = file.read()
-            dictData = json.loads(jsonData)
-        return dictData["otryad"]
-    except:
-        return None
 
+def get_squad(id_):
+    with open(json_path, encoding='utf-8') as js_file:
+        users_data = json.load(js_file)
+        return users_data.get(id_, False)
+
+
+def set_squad(id_, squad):
+    with open(json_path, encoding='utf-8') as js_file:
+        user_data = json.load(js_file)
+        user_data[id_] = squad
+
+        with open(json_path, 'w', encoding='utf-8') as js_dump:
+            json.dump(user_data, js_dump)
+
+
+def __clear_json():
+    with open(json_path, 'w', encoding='utf-8') as js_file:
+        json.dump(dict(), js_file)
+
+
+if __name__ == '__main__':
+    print(get_squad('1123'))
+    set_squad('1123', '5')
+    print(get_squad('1123'))
