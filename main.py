@@ -21,7 +21,8 @@ keyboard_contacts = types.ReplyKeyboardMarkup(resize_keyboard=False)
 buttons_function = ["Мероприятия сейчас", "Следующее мероприятие",
                     "Расписание на сегодня", "Контакты",
                     "Общая информация", "Изменить отряд"]
-buttons_contacts = ["Организаторы", "Преподователи", "Вожатые", "Остальные"]
+buttons_contacts = ["Организаторы", "Администрация", "Преподователи",
+                    "Вожатые", "Остальные"]
 buttons_start = ["Выбрать отряд"]
 buttons_group = ["5 отряд", "4 отряд", "3 отряд", "2 отряд", "1 отряд"]
 keyboard_general.add(*buttons_start)
@@ -29,10 +30,10 @@ keyboard_group.add(*buttons_group)
 keyboard_start.add(*buttons_start)
 keyboard_function.add(*buttons_function)
 keyboard_contacts.add(*buttons_contacts)
-
 contacts = {
     "Организаторы": "Почта - mail@innopoliscamp.ru \nКонтактный номер - 8-965-583-19-27 \nАдрес - г. Иннополис, ул. Квантовый бульвар, д.1, здание Лицея Иннополис.",
-    "Преподователи": "У InnoCamp 11 преподавателей по направлениям: \nКамилла Хамидуллина - @Kamila_ak \nМакше Сейткалиев - @seytkalievm \nМаргарита Сидорская - @RitaSidorskya \nНикита Носков - @MPardis \nАртем Сахаров - @ilostmygoddamnson \nАртемий Кочергин - @treatn \nДинар Шамсутдинов - @d_shamik \nМарина Лебединская - @mari1861 \nАнастасия Андронова - @andronova_anastasia \nМакар Шевченко - @SyrexMinus \nЕвгений Сазонов - @EvgenySazonov",
+    "Администрация": "Руководитель смены Эльшад Бахшиев @elshadbah\n Старший вожатый Татьяна Онищенко @o_teta_a\nПедагог-организатор Диана Куличенко @kulichik_di\nСтарший преподаватель Анастасия Андронова +7 999 232-15-71 @andronova_anastasia \nМедицинский работник Наиля Набиева 89869233503 @Nabi0987\nАдминистратор смены Рустам Хамидуллин +7 951 065-12-48 @Rstm_Khan\nСпортинструктор Дарья Капитурова +7 987 457-16-07 @raven_rch\nЗвукооператор Виталий Сапожников +7 904 767-48-52 @Hawk_Prime",
+    "Преподаватели": "У InnoCamp 11 преподавателей по направлениям: \n [Minecraft] Камилла Хамидуллина - @Kamila_ak \n [App Inventor] Макше Сейткалиев - @seytkalievm \n [Scratch] Маргарита Сидорская - @RitaSidorskya \n [Python] Никита Носков - @MPardis \n [C#] Артем Сахаров - @ilostmygoddamnson \n [Java] Артемий Кочергин - @treatn \n [Дизайн] Динар Шамсутдинов - @d_shamik \n [Маркетинг] Марина Лебединская - @mari1861 \n [Управление] Анастасия Андронова - @andronova_anastasia \n [Продвинутый Python] Макар Шевченко - @SyrexMinus \n [Проектная мастерская] Евгений Сазонов - @EvgenySazonov",
     "Вожатые": "1 отряд:\n Владимир Прокопенко(@prokov) и Юлия Кузьмина(@kyzminajulia) \n\n2 отряд:\n Алина Турчина(@lunallina) и Константин Воробьев \n\n3 отряд:\n Ксения Панасова(@KseniaHope20) и Мохамед Агатанов(@Demahom)  \n\n4 отряд:\n Дамир Нуртдинов(@Damurka5) Екатерина Мацнева(@matsnevakat)  \n\n5 отряд:\n Иван Булатов (@cffeeman) и Алиса Тимофеева (@Alisainno18) ",
     "Остальные": "DJ(диджей) - Виталий - +79047674852, \n Педагог-организатор @kulichik_di"
 }
