@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Shedule:
@@ -16,6 +16,9 @@ class Shedule:
         for time in today:
             t1, t2 = self._refact_two_datetimes(time)
             if t1 <= self.cur_datetime < t2:
+                return time, today[time]
+        else:
+            if t1 - timedelta(days=1) <= self.cur_datetime < t2:
                 return time, today[time]
         return False
 
@@ -56,3 +59,10 @@ class Shedule:
         return res.replace(hour=int(time_str[:time_str.find(':')]),
                            minute=int(time_str[time_str.find(':') + 1:]),
                            second=0)
+
+
+if __name__ == '__main__':
+    dt = datetime.now()
+    dt = dt.replace(day=26, hour=21, minute=31)
+    sd = Shedule(dt, '1')
+    print(sd.what_next_activity())
