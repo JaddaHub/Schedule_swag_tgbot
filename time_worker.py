@@ -52,11 +52,17 @@ class Shedule:
                    0] - self.cur_datetime
 
     def show_shedule(self):
-        return self.shedule[self.squad][str(self.cur_datetime.day)]
+        try:
+            return self.shedule[self.squad][str(self.cur_datetime.day)]
+        except KeyError:
+            return
 
     def show_shedule_tomorrow(self):
-        return self.shedule[self.squad][
-            str(self.cur_datetime + timedelta(days=1))]
+        try:
+            return self.shedule[self.squad][
+                str(self.cur_datetime + timedelta(days=1))]
+        except KeyError:
+            return
 
     def _refact_two_datetimes(self, time):
         return self._refact_time_to_datetime(
