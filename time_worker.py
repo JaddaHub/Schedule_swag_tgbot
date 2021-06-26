@@ -12,7 +12,10 @@ class Shedule:
             self.shedule = json.load(jsload)
 
     def what_activity(self):
-        today = self.shedule[self.squad][str(self.cur_datetime.day)]
+        try:
+            today = self.shedule[self.squad][str(self.cur_datetime.day)]
+        except KeyError:
+            return
         for time in today:
             t1, t2 = self._refact_two_datetimes(time)
             if t1 <= self.cur_datetime < t2:
@@ -23,7 +26,10 @@ class Shedule:
         return False
 
     def what_next_activity(self):
-        today = self.shedule[self.squad][str(self.cur_datetime.day)]
+        try:
+            today = self.shedule[self.squad][str(self.cur_datetime.day)]
+        except KeyError:
+            return
         for time in today:
             t = self._refact_two_datetimes(time)[0]
             if t > self.cur_datetime:
@@ -47,6 +53,10 @@ class Shedule:
 
     def show_shedule(self):
         return self.shedule[self.squad][str(self.cur_datetime.day)]
+
+    def show_shedule_tomorrow(self):
+        return self.shedule[self.squad][
+            str(self.cur_datetime + timedelta(days=1))]
 
     def _refact_two_datetimes(self, time):
         return self._refact_time_to_datetime(
