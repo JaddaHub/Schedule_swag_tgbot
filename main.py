@@ -161,5 +161,17 @@ async def further_now(message: types.Message):
                              reply_markup=keyboard_start)
 
 
+
+functions_to_call = [
+    choose_group,
+    change_group,
+    registration,
+    event_now,
+    timetable_today,
+    general_info,
+    contact_menu,
+    further_now
+]
+
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
