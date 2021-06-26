@@ -18,8 +18,8 @@ keyboard_group = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_function = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_start = types.ReplyKeyboardMarkup(resize_keyboard=False)
 keyboard_contacts = types.ReplyKeyboardMarkup(resize_keyboard=False)
-buttons_function = ["Мероприятия сейчас", "Следующее мероприятие",
-                    "Расписание на сегодня", "Контакты",
+buttons_function = ["Мероприятия сейчас", "Расписание на сегодня",
+                    "Расписание на завтра", "Контакты",
                     "Общая информация", "Изменить отряд"]
 buttons_contacts = ["Организаторы", "Администрация", "Преподаватели",
                     "Вожатые", "Остальные"]
@@ -73,16 +73,28 @@ async def event_now(message: types.Message):
     if author_group:
         function_schedule = Shedule(time_now, author_group)
         name_activity = function_schedule.what_now()
-        least_time = str(function_schedule.remaining_time())
-        quan_minutes = least_time.split(":")[1]
-        quan_hours = least_time.split(":")[0]
-        quan_seconds = least_time.split(':')[2]
-        if name_activity:
-            await message.answer(
-                f"—————————————————— \n"
-                f"🔻➡️ У отряда №{author_group} сейчас {name_activity[1]} \n"
-                f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}:{quan_seconds}) \n"
-                f"——————————————————")
+        if name_activity is not None:
+            least_time = str(function_schedule.remaining_time())
+            quan_minutes = least_time.split(":")[1]
+            quan_hours = least_time.split(":")[0]
+            quan_seconds = least_time.split(':')[2]
+            name_activity_next = function_schedule.what_next()
+            least_time_next = str(function_schedule.remaining_to_next())
+            quan_minutes_next = least_time_next.split(":")[1]
+            quan_hours_next = least_time_next.split(":")[0]
+            quan_seconds_next = least_time_next.split(":")[2]
+            if name_activity:
+                await message.answer(
+                    f"—————————————————— \n"
+                    f"🔻➡️ У отряда №{author_group} сейчас {name_activity[1]} \n"
+                    f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}:{quan_seconds}) \n \n"
+                    f"➡ Следующее мероприятие {name_activity_next[1]}\n⏰ Продолжительность {name_activity_next[0]}(до него осталось {quan_hours_next}:{quan_minutes_next}:{quan_seconds_next}) \n"
+                    f"——————————————————")
+            else:
+                await message.answer(
+                    f"—————————————————— \n"
+                    f"🔻➡️ У отряда №{author_group} сейчас свободное время \n"
+                    f"——————————————————")
         else:
             await message.answer(
                 f"—————————————————— \n"
@@ -104,11 +116,40 @@ async def timetable_today(message: types.Message):
         result += "—————————————————— \n"
         function_table = Shedule(time_now, author_group)
         timetable = function_table.show_shedule()
-        for i in timetable.keys():
-            result += f"⭕ {i} {timetable[i]}\n"
-        result += "——————————————————"
-        await message.answer(result,
-                             reply_markup=keyboard_function)
+        if timetable is not None:
+            for i in timetable.keys():
+                result += f"⭕ {i} {timetable[i]}\n"
+            result += "——————————————————"
+            await message.answer(result,
+                                 reply_markup=keyboard_function)
+        else:
+            await message.answer(f"🛑 Расписания на сегодня нет 🛑",
+                                 reply_markup=keyboard_start)
+    else:
+        await message.answer(f"🛑 Вы не выбрали отряд! 🛑",
+                             reply_markup=keyboard_start)
+
+
+@dp.message_handler(lambda message: message.text == "Расписание на завтра")
+async def timetable_tomorrow(message: types.Message):
+    time_now = datetime.now()
+    author_id = str(message.from_user.id)
+    author_group = get_squad(author_id)
+    if author_group:
+        result = "—————————————————— \n"
+        result += f"🟥 Расписание {author_group} отряда на завтра \n"
+        result += "—————————————————— \n"
+        function_table = Shedule(time_now, author_group)
+        timetable = function_table.show_shedule_tomorrow()
+        if timetable is not None:
+            for i in timetable.keys():
+                result += f"⭕ {i} {timetable[i]}\n"
+            result += "——————————————————"
+            await message.answer(result,
+                                 reply_markup=keyboard_function)
+        else:
+            await message.answer(f"🛑 Расписания на завтра нет 🛑",
+                                 reply_markup=keyboard_start)
     else:
         await message.answer(f"🛑 Вы не выбрали отряд! 🛑",
                              reply_markup=keyboard_start)
@@ -138,40 +179,6 @@ async def contact_menu(message: types.Message):
     await message.answer(result,
                          reply_markup=keyboard_function)
 
-
-@dp.message_handler(lambda message: message.text == "Следующее мероприятие")
-async def further_now(message: types.Message):
-    time_now = datetime.now()
-    author_id = str(message.from_user.id)
-    author_group = get_squad(author_id)
-    if author_group:
-        function_schedule = Shedule(time_now, author_group)
-        name_activity = function_schedule.what_next()
-        least_time = str(function_schedule.remaining_to_next())
-        quan_minutes = least_time.split(":")[1]
-        quan_hours = least_time.split(":")[0]
-        quan_seconds = least_time.split(":")[2]
-        await message.answer(
-            f"—————————————————— \n"
-            f"🔻➡️ У отряда №{author_group} следующее мероприятие: {name_activity[1]} \n \n"
-            f"⏰ Продолжительность {name_activity[0]}(осталось {quan_hours}:{quan_minutes}:{quan_seconds}) \n"
-            f"——————————————————")
-    else:
-        await message.answer(f"🛑 Вы не выбрали отряд! 🛑",
-                             reply_markup=keyboard_start)
-
-
-
-functions_to_call = [
-    choose_group,
-    change_group,
-    registration,
-    event_now,
-    timetable_today,
-    general_info,
-    contact_menu,
-    further_now
-]
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
