@@ -16,6 +16,7 @@ class Shedule:
             today = self.shedule[self.squad][str(self.cur_datetime.day)]
         except KeyError:
             return
+
         for time in today:
             t1, t2 = self._refact_two_datetimes(time)
             if t1 <= self.cur_datetime < t2:
@@ -23,6 +24,7 @@ class Shedule:
         else:
             if t1 - timedelta(days=1) <= self.cur_datetime < t2:
                 return time, today[time]
+
         return False
 
     def what_next_activity(self):
@@ -30,6 +32,7 @@ class Shedule:
             today = self.shedule[self.squad][str(self.cur_datetime.day)]
         except KeyError:
             return
+
         for time in today:
             t = self._refact_two_datetimes(time)[0]
             if t > self.cur_datetime:
@@ -60,7 +63,7 @@ class Shedule:
     def show_shedule_tomorrow(self):
         try:
             return self.shedule[self.squad][
-                str(self.cur_datetime + timedelta(days=1))]
+                str((self.cur_datetime + timedelta(days=1)).day)]
         except KeyError:
             return
 
@@ -81,4 +84,4 @@ if __name__ == '__main__':
     dt = datetime.now()
     dt = dt.replace(day=26, hour=21, minute=31)
     sd = Shedule(dt, '1')
-    print(sd.what_next_activity())
+    print(sd.show_shedule_tomorrow())
