@@ -8,6 +8,7 @@ from jsonreader import set_squad, get_squad, get_contacts
 import speech_recognition as sr
 import subprocess
 from voice_worker import del_audio_files, CommandSelector
+import sys
 
 r = sr.Recognizer()
 
@@ -192,7 +193,7 @@ async def get_voice(message: types.Message):
     file_ID = message.voice.file_id
     file = await bot.get_file(file_ID)
     file_path = file.file_path
-    await bot.download_file(file_path, audio_to_recognise)
+    await bot.download_file(file_path, audio_ogg_to_wav)
     src_filename = audio_ogg_to_wav
     process = subprocess.run(
         ['ffmpeg', '-i', src_filename, audio_to_recognise])
@@ -206,10 +207,22 @@ async def get_voice(message: types.Message):
 
     cs = CommandSelector(text)
     result_command = cs.get_recognized_function()
-    if result_command.isalpha():
-        await contact2_menu(result_command)
+    a = types.message.Message(text=result_command)
+    if result_command[0:3] == "reg":
+        author_id = str(message.from_user.id)
+        otryad_number = result_command.split('_')[1]
+        set_squad(author_id, otryad_number)
+        await message.answer(
+            f"✅ Вы выбрали отряд номер {otryad_number}",
+            reply_markup=keyboard_function)
+    elif result_command.isalpha():
+        content = result_command
+        result = f"{content}:\n {contacts[content]} \n \n "
+        await message.answer(result,
+                             reply_markup=keyboard_function)
     else:
-        await eval(f'{cs.get_recognized_function()}(message)')
+        await eval(f'{cs.get_recognized_function()[:-1]}(message)')
+
 
 
 if __name__ == "__main__":
