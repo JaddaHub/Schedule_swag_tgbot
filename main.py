@@ -204,7 +204,7 @@ async def get_voice(message: types.Message):
     del_audio_files()
 
     cs = CommandSelector(text)
-    print(cs.get_recognized_function())
+    exec(f'{cs.get_recognized_function()}({message})')
 
 
 if __name__ == "__main__":
