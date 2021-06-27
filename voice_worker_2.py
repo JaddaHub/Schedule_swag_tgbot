@@ -1,8 +1,17 @@
 from main import voice_commands
 from pymorphy2 import MorphAnalyzer
+import os
+
+path_ogg_file = 'test.ogg'
+path_wav_file = 'test.wav'
 
 
-class VoiceRecognizer:
+def del_audio_files():
+    os.remove(path_ogg_file)
+    os.remove(path_wav_file)
+
+
+class CommandSelector:
     def __init__(self, text):
         self.__validating_voice_commands()
         self.morph = MorphAnalyzer()
@@ -26,3 +35,7 @@ class VoiceRecognizer:
             for word in value:
                 res_words.add(self.morph.normal_forms(word)[0])
             voice_commands[command] = res_words
+
+
+if __name__ == '__main__':
+    pass
