@@ -31,7 +31,7 @@ def get_count_of_users():
 
 
 def get_contacts():
-    with open(contacts_json_path, encoding='utf-8') as js_file:
+    with open(contacts_json_path) as js_file:
         return json.load(js_file)
 
 
