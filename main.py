@@ -199,7 +199,7 @@ voice_commands = {
 
 
 @dp.message_handler(state="*", content_types="voice")
-async def bot_echo(message: types.Message):
+async def get_voice(message: types.Message):
     file_ID = message.voice.file_id
     file = await bot.get_file(file_ID)
     file_path = file.file_path
