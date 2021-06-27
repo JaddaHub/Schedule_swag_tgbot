@@ -5,14 +5,18 @@ path_ogg_file = 'audio.ogg'
 path_wav_file = 'audio.wav'
 
 voice_commands = {
-    'change_group': {'изменить', 'отряд'},
-    'registration': {'первый', 'второй', 'третий', 'четвертый', 'пятый',
-                     'отряд'},
-    'event_now': {'мероприятия', 'сейчас'},
-    'timetable_today': {'расписание', 'на', 'сегодня'},
-    'timetable_tomorrow': {'расписание', 'на', 'завтра'},
-    'general_info': {'общая', 'информация'},
-    'contact_menu': {'контакты'},
+
+    # при добалении голосовой функции ставь в конце "_",
+    # при добавлении новых контактов
+
+    'change_group_': {'изменить', 'отряд'},
+    'registration_': {'первый', 'второй', 'третий', 'четвертый', 'пятый',
+                      'отряд'},
+    'event_now_': {'мероприятия', 'сейчас'},
+    'timetable_today_': {'расписание', 'на', 'сегодня'},
+    'timetable_tomorrow_': {'расписание', 'на', 'завтра'},
+    'general_info_': {'общая', 'информация'},
+    'contact_menu_': {'контакты'},
     'Администрация': {'администрация'},
     'Организаторы': {'рганизаторы'},
     'Преподаватели': {'преподаватели'},
@@ -43,6 +47,7 @@ class CommandSelector:
             self.matches[command] = len(
                 self.spoken_word & voice_commands[command])
         self.command = max(self.matches.items(), key=lambda x: x[1])[0]
+        print(self.command)
 
     def get_recognized_function(self):
         return self.command
