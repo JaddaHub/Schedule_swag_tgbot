@@ -178,14 +178,16 @@ async def contact_menu(message: types.Message):
 
 
 @dp.message_handler(lambda message: message.text in buttons_contacts)
-async def contact_menu(message: types.Message):
-    result = f"{message.text}:\n {contacts[message.text]} \n \n "
+async def contact2_menu(message: types.Message):
+    content = message.text
+    result = f"{content}:\n {contacts[content]} \n \n "
     await message.answer(result,
                          reply_markup=keyboard_function)
 
 
 @dp.message_handler(state="*", content_types="voice")
 async def get_voice(message: types.Message):
+    del_audio_files()
     file_ID = message.voice.file_id
     file = await bot.get_file(file_ID)
     file_path = file.file_path
@@ -201,11 +203,12 @@ async def get_voice(message: types.Message):
         text = r.recognize_google(audio, language="ru_RU")
         await message.answer(f"Ваш текст: {text}")
 
-    del_audio_files()
-
     cs = CommandSelector(text)
-    exec(f'{cs.get_recognized_function()}({message})')
-
+    result_command = cs.get_recognized_function()
+    if result_command.isalpha():
+        await contact2_menu(result_command)
+    else:
+        await eval(f'{cs.get_recognized_function()}(message)')
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
