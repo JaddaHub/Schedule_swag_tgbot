@@ -5,6 +5,12 @@ from datetime import date, datetime
 from time_worker import Shedule
 import json
 from jsonreader import set_squad, get_squad, get_contacts
+import speech_recognition as sr
+import subprocess
+import io
+import soundfile as sf
+
+r = sr.Recognizer()
 
 # Объект бота
 bot = Bot(token=config.TOKEN)
@@ -190,6 +196,25 @@ voice_commands = {
     general_info: {'общая', 'информация'},
     contact_menu: {'контакты'},
 }
+
+
+@dp.message_handler(state="*", content_types="voice")
+async def bot_echo(message: types.Message):
+    file_ID = message.voice.file_id
+    file = await bot.get_file(file_ID)
+    file_path = file.file_path
+    await bot.download_file(file_path, "audio.ogg")
+    src_filename = 'audio.ogg'
+    dest_filename = 'audio.wav'
+    process = subprocess.run(['ffmpeg', '-i', src_filename, dest_filename])
+    if process.returncode != 0:
+        raise Exception("Something went wrong")
+    file = sr.AudioFile('audio.wav')
+    with file as source:
+        audio = r.record(source)
+        text = r.recognize_google(audio, language="ru_RU")
+        await message.answer(f"Ваш тектс {text}")
+
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
