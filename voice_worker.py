@@ -46,7 +46,6 @@ class CommandSelector:
             self.matches[command] = len(
                 self.spoken_word & voice_commands[command])
         self.command = max(self.matches.items(), key=lambda x: x[1])[0]
-        print(self.command)
 
     def get_recognized_function(self):
         return self.command
