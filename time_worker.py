@@ -1,12 +1,12 @@
 import json
 from datetime import datetime, timedelta
-
+from config import json_name
 
 class Shedule:
     def __init__(self, cur_datetime, squad):
         self.cur_datetime = cur_datetime
         self.squad = squad
-        self.JSON_NAME = 'json_timetable.json'
+        self.JSON_NAME = json_name
 
         with open(self.JSON_NAME, encoding='utf-8', mode='r') as jsload:
             self.shedule = json.load(jsload)

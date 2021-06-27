@@ -1,27 +1,9 @@
 from pymorphy2 import MorphAnalyzer
 import os
+from config import audio_ogg_to_wav, audio_to_recognise, voice_commands
 
-path_ogg_file = 'audio.ogg'
-path_wav_file = 'audio.wav'
-
-voice_commands = {
-
-    # при добалении голосовой функции ставь в конце "_",
-
-    'change_group_': {'изменить', 'отряд'},
-    'registration_': {'первый', 'второй', 'третий', 'четвертый', 'пятый',
-                      'отряд'},
-    'event_now_': {'мероприятия', 'сейчас'},
-    'timetable_today_': {'расписание', 'на', 'сегодня'},
-    'timetable_tomorrow_': {'расписание', 'на', 'завтра'},
-    'general_info_': {'общая', 'информация'},
-    'contact_menu_': {'контакты'},
-    'Администрация': {'администрация'},
-    'Организаторы': {'рганизаторы'},
-    'Преподаватели': {'преподаватели'},
-    'Вожатые': {'вожатые'},
-    'Остальные': {'остальные'}
-}
+path_ogg_file = audio_ogg_to_wav
+path_wav_file = audio_to_recognise
 
 
 def del_audio_files():

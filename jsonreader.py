@@ -1,7 +1,5 @@
 import json
-
-json_path = 'users_data.json'
-contacts_json_path = 'json_contacts.json'
+from config import json_path, contacts_json_path
 
 
 def get_squad(id_):
