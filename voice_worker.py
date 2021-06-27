@@ -22,8 +22,11 @@ voice_commands = {
 
 
 def del_audio_files():
-    os.remove(path_ogg_file)
-    os.remove(path_wav_file)
+    try:
+        os.remove(path_ogg_file)
+        os.remove(path_wav_file)
+    except FileNotFoundError:
+        return
 
 
 class CommandSelector:
@@ -55,4 +58,3 @@ class CommandSelector:
 if __name__ == '__main__':
     cs = CommandSelector('покажи администрацию')
     print(cs.get_recognized_function())
-    print(type(cs.get_recognized_function()))

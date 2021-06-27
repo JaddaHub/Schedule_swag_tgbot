@@ -36,7 +36,4 @@ def get_contacts():
 
 
 if __name__ == '__main__':
-    set_squad('123', '1')
-    print(get_count_of_users())
-    set_squad('1212', '2')
-    print(get_count_of_users())
+    print(get_contacts())
