@@ -8,7 +8,7 @@ class Shedule:
         self.squad = squad
         self.JSON_NAME = 'json_timetable.json'
 
-        with open(self.JSON_NAME, encoding='utf-8') as jsload:
+        with open(self.JSON_NAME, encoding='utf-8', mode='r') as jsload:
             self.shedule = json.load(jsload)
 
     def what_activity(self):

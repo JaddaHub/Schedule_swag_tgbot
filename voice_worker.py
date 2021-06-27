@@ -1,9 +1,19 @@
-from main import voice_commands
 from pymorphy2 import MorphAnalyzer
 import os
 
-path_ogg_file = 'test.ogg'
-path_wav_file = 'test.wav'
+path_ogg_file = 'audio.ogg'
+path_wav_file = 'audio.wav'
+
+voice_commands = {
+    'change_group': {'изменить', 'отряд'},
+    'registration': {'первый', 'второй', 'третий', 'четвертый', 'пятый',
+                     'отряд'},
+    'event_now': {'мероприятия', 'сейчас'},
+    'timetable_today': {'расписание', 'на', 'сегодня'},
+    'timetable_tomorrow': {'расписание', 'на', 'завтра'},
+    'general_info': {'общая', 'информация'},
+    'contact_menu': {'контакты'},
+}
 
 
 def del_audio_files():
@@ -13,8 +23,8 @@ def del_audio_files():
 
 class CommandSelector:
     def __init__(self, text):
-        self.__validating_voice_commands()
         self.morph = MorphAnalyzer()
+        self.__validating_voice_commands()
         self.spoken_word = set()
         self.matches = dict([(key, 0) for key in voice_commands])
 
@@ -38,4 +48,5 @@ class CommandSelector:
 
 
 if __name__ == '__main__':
-    pass
+    cs = CommandSelector('Соси завтра')
+    print(cs.get_recognized_function())

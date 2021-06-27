@@ -3,12 +3,10 @@ from aiogram import Bot, Dispatcher, executor, types
 import config
 from datetime import date, datetime
 from time_worker import Shedule
-import json
 from jsonreader import set_squad, get_squad, get_contacts
 import speech_recognition as sr
 import subprocess
-import io
-import soundfile as sf
+from voice_worker import del_audio_files, CommandSelector
 
 r = sr.Recognizer()
 
@@ -186,18 +184,6 @@ async def contact_menu(message: types.Message):
                          reply_markup=keyboard_function)
 
 
-voice_commands = {
-    change_group: {'изменить', 'отряд'},
-    registration: {'первый', 'второй', 'третий', 'четвертый', 'пятый',
-                   'отряд'},
-    event_now: {'мероприятия', 'сейчас'},
-    timetable_today: {'расписание', 'на', 'сегодня'},
-    timetable_tomorrow: {'расписание', 'на', 'завтра'},
-    general_info: {'общая', 'информация'},
-    contact_menu: {'контакты'},
-}
-
-
 @dp.message_handler(state="*", content_types="voice")
 async def get_voice(message: types.Message):
     file_ID = message.voice.file_id
@@ -213,7 +199,12 @@ async def get_voice(message: types.Message):
     with file as source:
         audio = r.record(source)
         text = r.recognize_google(audio, language="ru_RU")
-        await message.answer(f"Ваш тектс {text}")
+        await message.answer(f"Ваш текст: {text}")
+
+    del_audio_files()
+
+    cs = CommandSelector(text)
+    print(cs.get_recognized_function())
 
 
 if __name__ == "__main__":
