@@ -13,6 +13,11 @@ voice_commands = {
     'timetable_tomorrow': {'расписание', 'на', 'завтра'},
     'general_info': {'общая', 'информация'},
     'contact_menu': {'контакты'},
+    'Администрация': {'администрация'},
+    'Организаторы': {'рганизаторы'},
+    'Преподаватели': {'преподаватели'},
+    'Вожатые': {'вожатые'},
+    'Остальные': {'остальные'}
 }
 
 
@@ -48,5 +53,6 @@ class CommandSelector:
 
 
 if __name__ == '__main__':
-    cs = CommandSelector('Соси завтра')
+    cs = CommandSelector('покажи администрацию')
     print(cs.get_recognized_function())
+    print(type(cs.get_recognized_function()))
