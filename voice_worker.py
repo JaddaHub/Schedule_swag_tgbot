@@ -18,7 +18,7 @@ def del_audio_files():
 class CommandSelector:
     def __init__(self, text):
         self.morph = MorphAnalyzer()
-        self.validate_dict_to_normal_form(voice_commands)
+        self.validate_value_to_normal(voice_commands)
         self.words2num = self.validate_keys_to_normal(words2num)
         self.spoken_word = set()
         self.matches = dict([(key, 0) for key in voice_commands])
@@ -39,7 +39,7 @@ class CommandSelector:
     def get_recognized_function(self):
         return self.command
 
-    def validate_dict_to_normal_form(self, voice_commands):
+    def validate_value_to_normal(self, voice_commands):
         for command, value in voice_commands.items():
             res_words = set()
             for word in value:
