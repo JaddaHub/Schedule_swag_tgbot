@@ -180,5 +180,16 @@ async def contact_menu(message: types.Message):
                          reply_markup=keyboard_function)
 
 
+voice_commands = {
+    change_group: {'изменить', 'отряд'},
+    registration: {'первый', 'второй', 'третий', 'четвертый', 'пятый',
+                   'отряд'},
+    event_now: {'мероприятия', 'сейчас'},
+    timetable_today: {'расписание', 'на', 'сегодня'},
+    timetable_tomorrow: {'расписание', 'на', 'завтра'},
+    general_info: {'общая', 'информация'},
+    contact_menu: {'контакты'},
+}
+
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)

@@ -1,5 +1,28 @@
-from main import functions
+from main import voice_commands
+from pymorphy2 import MorphAnalyzer
 
-text = input()
-spoken_words = set(text.split())
 
+class VoiceRecognizer:
+    def __init__(self, text):
+        self.__validating_voice_commands()
+        self.morph = MorphAnalyzer()
+        self.spoken_word = set()
+        self.matches = dict([(key, 0) for key in voice_commands])
+
+        for word in text.split():
+            self.spoken_word.add(self.morph.normal_forms(word)[0])
+
+        for command in voice_commands:
+            self.matches[command] = len(
+                self.spoken_word & voice_commands[command])
+        self.command = max(self.matches.items(), key=lambda x: x[1])[0]
+
+    def get_recognized_function(self):
+        return self.command
+
+    def __validating_voice_commands(self):
+        for command, value in voice_commands.items():
+            res_words = set()
+            for word in value:
+                res_words.add(self.morph.normal_forms(word)[0])
+            voice_commands[command] = res_words

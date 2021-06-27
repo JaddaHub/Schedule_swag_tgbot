@@ -2,12 +2,6 @@
 # OpenSSL-related files best not committed
 
 
-
-## My ignores
-venv
-.idea
-
-
 ## Certificate Authority
 *.ca
 
@@ -6522,3 +6516,5 @@ var/
 ######################
 *License.config
 
+/venv/
+/.idea/
