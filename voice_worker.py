@@ -1,10 +1,9 @@
 from pymorphy2 import MorphAnalyzer
 import os
-from config import audio_ogg_to_wav, audio_to_recognise, voice_commands, \
-    words2num
+from config import audio_ogg, audio_wav, voice_commands, words2num
 
-path_ogg_file = audio_ogg_to_wav
-path_wav_file = audio_to_recognise
+path_ogg_file = audio_ogg
+path_wav_file = audio_wav
 
 
 def del_audio_files():

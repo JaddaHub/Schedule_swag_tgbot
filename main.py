@@ -1,7 +1,7 @@
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 import config
-from config import audio_to_recognise, audio_ogg_to_wav
+from config import audio_ogg, audio_wav
 from datetime import date, datetime
 from time_worker import Shedule
 from jsonreader import set_squad, get_squad, get_contacts
@@ -193,13 +193,13 @@ async def get_voice(message: types.Message):
     file_ID = message.voice.file_id
     file = await bot.get_file(file_ID)
     file_path = file.file_path
-    await bot.download_file(file_path, audio_ogg_to_wav)
-    src_filename = audio_ogg_to_wav
+    await bot.download_file(file_path, audio_ogg)
+    src_filename = audio_ogg
     process = subprocess.run(
-        ['ffmpeg', '-i', src_filename, audio_to_recognise])
+        ['ffmpeg', '-i', src_filename, audio_wav])
     if process.returncode != 0:
         raise Exception("Something went wrong")
-    file = sr.AudioFile(audio_to_recognise)
+    file = sr.AudioFile(audio_wav)
     with file as source:
         audio = r.record(source)
         text = r.recognize_google(audio, language="ru_RU")
@@ -222,7 +222,6 @@ async def get_voice(message: types.Message):
                              reply_markup=keyboard_function)
     else:
         await eval(f'{cs.get_recognized_function()[:-1]}(message)')
-
 
 
 if __name__ == "__main__":
