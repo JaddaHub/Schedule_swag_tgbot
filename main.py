@@ -9,13 +9,16 @@ import speech_recognition as sr
 import subprocess
 from voice_worker import del_audio_files, CommandSelector
 import sys
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.utils.exceptions import Throttled
 
 r = sr.Recognizer()
 
 # Объект бота
 bot = Bot(token=config.TOKEN)
 # Диспетчер для бота
-dp = Dispatcher(bot)
+storage = MemoryStorage()
+dp = Dispatcher(bot, storage=storage)
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
 
@@ -27,7 +30,7 @@ keyboard_contacts = types.ReplyKeyboardMarkup(resize_keyboard=False)
 buttons_function = ["Мероприятия сейчас", "Расписание на сегодня",
                     "Расписание на завтра", "Контакты",
                     "Общая информация", "Изменить отряд"]
-buttons_contacts = ["Организаторы", "Администрация", "Преподаватели",
+buttons_contacts = ["Организация", "Администрация", "Преподаватели",
                     "Вожатые", "Остальные"]
 buttons_start = ["Выбрать отряд"]
 buttons_group = ["5 отряд", "4 отряд", "3 отряд", "2 отряд", "1 отряд"]
@@ -39,26 +42,35 @@ keyboard_contacts.add(*buttons_contacts)
 contacts = get_contacts()
 
 
+async def anti_flood(*args, **kwargs):
+    m = args[0]
+    await m.answer("Не флуди :)")
+
+
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
     await message.answer(
-        "👋 Привет! Этот бот был специально разработан для Лицея Иннополиса. Он умеет выдавать расписание 📚 на текущий день, мероприятие в данный момент 📜 \n \n"
+        "👋 Привет! Этот бот был специально разработан для Innocamp. Он умеет выдавать расписание 📚 на текущий день, мероприятие в данный момент 📜 \n \n"
         "𝔭𝔯𝔬𝔡. 𝔟𝔶 𝔅𝔘𝔉𝔉𝔐ℑ",
         reply_markup=keyboard_start)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(lambda message: message.text == "Выбрать отряд")
 async def choose_group(message: types.Message):
     await message.answer("Выберите отряд с 1 по 5 номер 👇",
                          reply_markup=keyboard_group)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(lambda message: message.text == "Изменить отряд")
 async def change_group(message: types.Message):
     await message.answer("Выберите отряд с 1 по 5 номер 👇",
                          reply_markup=keyboard_group)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(
     lambda message: message.text in ["1 отряд", "2 отряд", "3 отряд",
                                      "4 отряд", "5 отряд"])
@@ -71,6 +83,7 @@ async def registration(message: types.Message):
         reply_markup=keyboard_function)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(lambda message: message.text == "Мероприятия сейчас")
 async def event_now(message: types.Message):
     time_now = datetime.now()
@@ -111,6 +124,7 @@ async def event_now(message: types.Message):
                              reply_markup=keyboard_start)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(lambda message: message.text == "Расписание на сегодня")
 async def timetable_today(message: types.Message):
     time_now = datetime.now()
@@ -136,6 +150,7 @@ async def timetable_today(message: types.Message):
                              reply_markup=keyboard_start)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(lambda message: message.text == "Расписание на завтра")
 async def timetable_tomorrow(message: types.Message):
     time_now = datetime.now()
@@ -161,6 +176,9 @@ async def timetable_tomorrow(message: types.Message):
                              reply_markup=keyboard_start)
 
 
+@dp.throttled(lambda msg, loop, *args, **kwargs: loop.create_task(
+    bot.send_message(msg.from_user.id, "Throttled")),
+              rate=5)
 @dp.message_handler(lambda message: message.text == "Общая информация")
 async def general_info(message: types.Message):
     await message.answer(
@@ -172,6 +190,7 @@ async def general_info(message: types.Message):
         reply_markup=keyboard_function)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(lambda message: message.text == "Контакты")
 async def contact_menu(message: types.Message):
     result = "Выберите группу людей которая вас интересует"
@@ -179,6 +198,7 @@ async def contact_menu(message: types.Message):
                          reply_markup=keyboard_contacts)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(lambda message: message.text in buttons_contacts)
 async def contact2_menu(message: types.Message):
     content = message.text
@@ -187,6 +207,7 @@ async def contact2_menu(message: types.Message):
                          reply_markup=keyboard_function)
 
 
+@dp.throttled(anti_flood, rate=1)
 @dp.message_handler(state="*", content_types="voice")
 async def get_voice(message: types.Message):
     del_audio_files()
@@ -203,7 +224,7 @@ async def get_voice(message: types.Message):
     with file as source:
         audio = r.record(source)
         text = r.recognize_google(audio, language="ru_RU")
-        await message.answer(f"Ваш текст: {text}")
+        # await message.answer(f"Ваш текст: {text}")
 
     cs = CommandSelector(text)
     result_command = cs.get_recognized_function()
