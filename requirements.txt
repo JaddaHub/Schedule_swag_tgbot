@@ -1,0 +1,2 @@
+aiogram~=2.13
+pymorphy2~=0.9.1
