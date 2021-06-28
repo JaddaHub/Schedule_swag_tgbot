@@ -1,5 +1,5 @@
 import logging
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, executor, types
 import config
 from config import audio_ogg, audio_wav
 from datetime import date, datetime
@@ -10,6 +10,7 @@ import subprocess
 from voice_worker import del_audio_files, CommandSelector
 import sys
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.dispatcher import Dispatcher
 from aiogram.utils.exceptions import Throttled
 
 r = sr.Recognizer()
@@ -83,7 +84,7 @@ async def registration(message: types.Message):
         reply_markup=keyboard_function)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=5)
 @dp.message_handler(lambda message: message.text == "Мероприятия сейчас")
 async def event_now(message: types.Message):
     time_now = datetime.now()
@@ -176,9 +177,7 @@ async def timetable_tomorrow(message: types.Message):
                              reply_markup=keyboard_start)
 
 
-@dp.throttled(lambda msg, loop, *args, **kwargs: loop.create_task(
-    bot.send_message(msg.from_user.id, "Throttled")),
-              rate=5)
+@dp.throttled(anti_flood, rate=5)
 @dp.message_handler(lambda message: message.text == "Общая информация")
 async def general_info(message: types.Message):
     await message.answer(
@@ -224,7 +223,7 @@ async def get_voice(message: types.Message):
     with file as source:
         audio = r.record(source)
         text = r.recognize_google(audio, language="ru_RU")
-        # await message.answer(f"Ваш текст: {text}")
+        await message.answer(f"Ваш текст: {text}")
 
     cs = CommandSelector(text)
     result_command = cs.get_recognized_function()
