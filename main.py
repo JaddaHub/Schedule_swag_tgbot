@@ -145,7 +145,7 @@ async def timetable_today(message: types.Message):
                                  reply_markup=keyboard_function)
         else:
             await message.answer(f"🛑 Расписания на сегодня нет 🛑",
-                                 reply_markup=keyboard_start)
+                                 reply_markup=keyboard_function)
     else:
         await message.answer(f"🛑 Вы не выбрали отряд! 🛑",
                              reply_markup=keyboard_start)
@@ -171,7 +171,7 @@ async def timetable_tomorrow(message: types.Message):
                                  reply_markup=keyboard_function)
         else:
             await message.answer(f"🛑 Расписания на завтра нет 🛑",
-                                 reply_markup=keyboard_start)
+                                 reply_markup=keyboard_function)
     else:
         await message.answer(f"🛑 Вы не выбрали отряд! 🛑",
                              reply_markup=keyboard_start)

@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timedelta
 from config import json_name
 
+
 class Shedule:
     def __init__(self, cur_datetime, squad):
         self.cur_datetime = cur_datetime
