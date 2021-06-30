@@ -48,7 +48,7 @@ async def anti_flood(*args, **kwargs):
     await m.answer("Не флуди :)")
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
     await message.answer(
@@ -57,21 +57,21 @@ async def process_start_command(message: types.Message):
         reply_markup=keyboard_start)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text == "Выбрать отряд")
 async def choose_group(message: types.Message):
     await message.answer("Выберите отряд с 1 по 5 номер 👇",
                          reply_markup=keyboard_group)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text == "Изменить отряд")
 async def change_group(message: types.Message):
     await message.answer("Выберите отряд с 1 по 5 номер 👇",
                          reply_markup=keyboard_group)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(
     lambda message: message.text in ["1 отряд", "2 отряд", "3 отряд",
                                      "4 отряд", "5 отряд"])
@@ -84,7 +84,7 @@ async def registration(message: types.Message):
         reply_markup=keyboard_function)
 
 
-@dp.throttled(anti_flood, rate=5)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text == "Мероприятия сейчас")
 async def event_now(message: types.Message):
     time_now = datetime.now()
@@ -125,7 +125,7 @@ async def event_now(message: types.Message):
                              reply_markup=keyboard_start)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text == "Расписание на сегодня")
 async def timetable_today(message: types.Message):
     time_now = datetime.now()
@@ -151,7 +151,7 @@ async def timetable_today(message: types.Message):
                              reply_markup=keyboard_start)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text == "Расписание на завтра")
 async def timetable_tomorrow(message: types.Message):
     time_now = datetime.now()
@@ -177,7 +177,7 @@ async def timetable_tomorrow(message: types.Message):
                              reply_markup=keyboard_start)
 
 
-@dp.throttled(anti_flood, rate=5)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text == "Общая информация")
 async def general_info(message: types.Message):
     await message.answer(
@@ -189,7 +189,7 @@ async def general_info(message: types.Message):
         reply_markup=keyboard_function)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text == "Контакты")
 async def contact_menu(message: types.Message):
     result = "Выберите группу людей которая вас интересует"
@@ -197,7 +197,7 @@ async def contact_menu(message: types.Message):
                          reply_markup=keyboard_contacts)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(lambda message: message.text in buttons_contacts)
 async def contact2_menu(message: types.Message):
     content = message.text
@@ -206,7 +206,7 @@ async def contact2_menu(message: types.Message):
                          reply_markup=keyboard_function)
 
 
-@dp.throttled(anti_flood, rate=1)
+@dp.throttled(anti_flood, rate=2)
 @dp.message_handler(state="*", content_types="voice")
 async def get_voice(message: types.Message):
     del_audio_files()

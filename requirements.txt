@@ -1,2 +1,4 @@
 aiogram~=2.13
 pymorphy2~=0.9.1
+speechrecognition~=3.8.1
+openpyxl~=3.0.7
