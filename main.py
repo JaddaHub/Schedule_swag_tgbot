@@ -94,7 +94,13 @@ async def event_now(message: types.Message):
         function_schedule = Shedule(time_now, author_group)
         name_activity = function_schedule.what_now()
         if name_activity is not None:
-            least_time = str(function_schedule.remaining_time())
+            least_time = function_schedule.remaining_time()
+            if not least_time:
+                return await message.answer(
+                    f"—————————————————— \n"
+                    f"🔻➡️ У отряда №{author_group} сейчас свободное время \n"
+                    f"——————————————————")
+            least_time = str(least_time)
             quan_minutes = least_time.split(":")[1]
             quan_hours = least_time.split(":")[0]
             quan_seconds = least_time.split(':')[2]
@@ -207,7 +213,7 @@ async def contact2_menu(message: types.Message):
 
 
 @dp.throttled(anti_flood, rate=2)
-@dp.message_handler(state="*", content_types="voice")
+@dp.message_handler(content_types="voice")
 async def get_voice(message: types.Message):
     del_audio_files()
     file_ID = message.voice.file_id

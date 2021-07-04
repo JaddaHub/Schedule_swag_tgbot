@@ -38,22 +38,25 @@ class Shedule:
             t = self._refact_two_datetimes(time)[0]
             if t > self.cur_datetime:
                 return time, today[time]
+        return False
 
     def what_now(self):
         return self.what_activity() if self.what_activity() else False
 
     def what_next(self):
-        return self.what_next_activity()
+        return self.what_next_activity() if self.what_next_activity() else False
 
     def remaining_time(self):
         now = self.what_now()
-        return self._refact_two_datetimes(now[0])[1] - self.cur_datetime if now \
-            else self._refact_two_datetimes(self.what_next()[0])[0] \
-                 - self.cur_datetime
+        if now:
+            return self._refact_two_datetimes(now[0])[1] - self.cur_datetime
+        elif self.what_next():
+            return self._refact_two_datetimes(self.what_next()[0])[0] - self.cur_datetime
+        return False
 
     def remaining_to_next(self):
         return self._refact_two_datetimes(self.what_next()[0])[
-                   0] - self.cur_datetime
+                   0] - self.cur_datetime if self.what_next() else False
 
     def show_shedule(self):
         try:
@@ -83,6 +86,5 @@ class Shedule:
 
 if __name__ == '__main__':
     dt = datetime.now()
-    dt = dt.replace(day=26, hour=21, minute=31)
-    sd = Shedule(dt, '1')
-    print(sd.show_shedule_tomorrow())
+    sh = Shedule(dt, '1')
+    print(sh.remaining_time())
