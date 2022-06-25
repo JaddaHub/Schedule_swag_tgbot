@@ -1,4 +1,4 @@
-TOKEN = "1764663180:AAEDQ0PUshlrY-e_EhIwTlvaMqwHngQrzb8"
+TOKEN = ""
 json_path = 'users_data.json'
 contacts_json_path = 'json_contacts.json'
 audio_ogg = "audio.ogg"
